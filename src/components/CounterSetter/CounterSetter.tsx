@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {Buttons} from '../Button/Button';
 import s from './../../App.module.css'
 
@@ -16,11 +16,12 @@ type CounterSetterPropsType = {
 export function CounterSetter(props: CounterSetterPropsType) {
 
 
-    const minInputStyle = (JSON.parse(props.minValue)) <= -1
+    const minInputStyle = (JSON.parse(props.minValue)) <= -1 ||
+    props.maxValue <= props.minValue
         ? s.startValueErrorInput
         : s.startValueInput
 
-    const equalValueInputStyle = props.maxValue === props.minValue
+    const equalValueInputStyle = props.maxValue <= props.minValue
         ? s.errorMaxValue : s.maxValue
 
     const setToLocalStorageMaxValueHandler = () => {
@@ -35,6 +36,9 @@ export function CounterSetter(props: CounterSetterPropsType) {
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.setMaxValue(JSON.parse(e.currentTarget.value))
         props.setDisValueSet(false)
+        if (JSON.parse(e.currentTarget.value) <= props.minValue) {
+            props.setDisValueSet(true)
+        }
     }
 
     const onChangeMinValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +47,7 @@ export function CounterSetter(props: CounterSetterPropsType) {
         if (JSON.parse(e.currentTarget.value) <= -1) {
             props.setDisValueSet(true)
         }
-        if(JSON.parse(e.currentTarget.value) === props.maxValue) {
+        if (JSON.parse(e.currentTarget.value) >= props.maxValue) {
             props.setDisValueSet(true)
         }
     }
@@ -56,15 +60,14 @@ export function CounterSetter(props: CounterSetterPropsType) {
     }
 
 
-
     return (
         <div className={s.CounterSetter}>
             <div className={s.Scoreboard}>
-                <div className={s.maxValue}>
-                        <span>max value:<input className={s.errorMaxValue}
-                                               type={'number'}
-                                               onChange={onChangeMaxValueHandler}
-                                               value={props.maxValue}
+                <div className={equalValueInputStyle}>
+                        <span>max value:<input
+                            type={'number'}
+                            onChange={onChangeMaxValueHandler}
+                            value={props.maxValue}
                         /></span>
                 </div>
                 <div>

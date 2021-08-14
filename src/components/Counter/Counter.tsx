@@ -2,6 +2,8 @@ import React from 'react';
 import {Buttons} from '../Button/Button';
 import s from './../../App.module.css'
 
+
+
 type CounterPropsType = {
     score: number
     setScore: (score: number) => void
@@ -13,7 +15,8 @@ type CounterPropsType = {
 
 function Counter(props: CounterPropsType) {
 
-    const messageWithError = props.minValue <= -1
+    const messageWithError = props.minValue <= -1 ||
+    props.maxValue <= props.minValue
         ? 'Incorrect value!'
         : props.score
 
@@ -21,7 +24,8 @@ function Counter(props: CounterPropsType) {
         ? s.ScoreboardRed
         : s.ScoreboardBlack
 
-    const styleWithErrorMessage = props.minValue <= -1
+    const styleWithErrorMessage = props.minValue <= -1 ||
+    props.maxValue <= props.minValue
         ? s.errorText
         : s.totalScore
 
@@ -37,7 +41,8 @@ function Counter(props: CounterPropsType) {
     return (
         <div className={s.Counter}>
             <div className={scoreColor}>
-                <span className={styleWithErrorMessage}>{messageWithError}</span>
+                <span className={styleWithErrorMessage}>
+                    {messageWithError}</span>
             </div>
             <div className={s.Buttons}>
                 <div className={s.incAndResButtons}>

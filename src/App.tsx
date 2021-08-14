@@ -11,7 +11,6 @@ function App() {
     let [score, setScore] = useState(minValue);
 
 
-
     const disInc = score === maxValue
     const disReset = score === minValue
 
@@ -33,6 +32,7 @@ function App() {
         }
     }
 
+
     return (
         <div className={s.counterTable}>
             <div>
@@ -53,7 +53,6 @@ function App() {
                                setDisValueSet={setDisValueSet}
                                score={score}
                                setScore={setScore}
-
                 />
             </div>
         </div>

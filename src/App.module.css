@@ -87,12 +87,18 @@ body {
     color: aqua;
 }
 
+.errorMaxValue {
+    font-size: 25px;
+    margin-left: 20px;
+    padding-top: 20px;
+    color: aqua;
+}
+
 .startValue {
     font-size: 25px;
     margin-left: 20px;
     color: aqua;
 }
-
 .maxValue input{
     width: 90px;
     height: 20px;
@@ -103,12 +109,12 @@ body {
     font-size: 18px;
 }
 
-.errorMaxValue {
+.errorMaxValue input{
     width: 90px;
     height: 20px;
     margin-left: 30px;
     border-radius: 5px;
-    border-color: red;
+    border: solid 5px red;
     text-align: center;
     font-size: 18px;
 }
@@ -120,6 +126,15 @@ body {
     margin-left: 33px;
     border-radius: 5px;
     border-color: aqua;
+    text-align: center;
+    font-size: 18px;
+}
+.startValueErrorInput {
+    width: 90px;
+    height: 20px;
+    margin-left: 33px;
+    border-radius: 5px;
+    border: solid 5px red;
     text-align: center;
     font-size: 18px;
 }

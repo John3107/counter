@@ -14,12 +14,6 @@ type ButtonsType = {
 
 export function Buttons(props: ButtonsType) {
 
-
-
-/*const changeValueSet = () => {
-        if()
-}*/
-
     return (
         <div>
             <div>
