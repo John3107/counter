@@ -1,3 +1,194 @@
 body {
     background-color: black;
 }
+
+.counterSetter {
+    position: fixed;
+    top: 100px;
+    left: 200px;
+}
+
+.counterTable {
+    position: fixed;
+    top: 100px;
+    left: 650px;
+}
+
+.Counter {
+    width: 300px;
+    height: 250px;
+    background-color: black;
+    margin: auto;
+    border-radius: 10px;
+    border: 3px solid aqua;
+}
+
+.ScoreboardRed {
+    width: 280px;
+    height: 120px;
+    border: 3px solid aqua;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: red;
+}
+
+.ScoreboardBlack {
+    width: 280px;
+    height: 120px;
+    border: 3px solid aqua;
+    color: aqua;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.totalScore {
+    font-size: 60px;
+    padding-left: 125px;
+}
+
+.errorText {
+    position: fixed;
+    top: 160px;
+    left: 580px;
+    font-size: 30px;
+    padding-left: 125px;
+    color: red;
+}
+
+.CounterSetter {
+    width: 300px;
+    height: 250px;
+    background-color: black;
+    margin: auto;
+    border-radius: 10px;
+    border: 3px solid aqua;
+}
+
+
+.Scoreboard {
+    width: 280px;
+    height: 120px;
+    border: 3px solid aqua;
+    color: aqua;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.maxValue {
+    font-size: 25px;
+    margin-left: 20px;
+    padding-top: 20px;
+    color: aqua;
+}
+
+.startValue {
+    font-size: 25px;
+    margin-left: 20px;
+    color: aqua;
+}
+
+.maxValue input{
+    width: 90px;
+    height: 20px;
+    margin-left: 30px;
+    border-radius: 5px;
+    border-color: aqua;
+    text-align: center;
+    font-size: 18px;
+}
+
+.errorMaxValue {
+    width: 90px;
+    height: 20px;
+    margin-left: 30px;
+    border-radius: 5px;
+    border-color: red;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.startValueInput {
+    width: 90px;
+    height: 20px;
+    margin-left: 33px;
+    border-radius: 5px;
+    border-color: aqua;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.Buttons {
+    width: 275px;
+    height: 80px;
+    background-color: black;
+    margin-top: 25px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border: 3px solid aqua;
+}
+
+.incAndResButtons div div button.Inc {
+    position: fixed;
+    top: 275px;
+    left: 660px;
+    background-color: aqua;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border-style: none;
+    margin-left: 20px;
+    margin-top: 25px;
+    font-size: 25px;
+    font-family: "Arial Black";
+}
+
+
+.incAndResButtons div div button.Res {
+    position: fixed;
+    top: 275px;
+    left: 800px;
+    background-color: aqua;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border-style: none;
+    margin-left: 20px;
+    margin-top: 25px;
+    font-size: 25px;
+    font-family: "Arial Black";
+}
+
+.setButton div div button.Set {
+    position: fixed;
+    top: 275px;
+    left: 280px;
+    background-color: aqua;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border-style: none;
+    margin-left: 20px;
+    margin-top: 25px;
+    font-size: 25px;
+    font-family: "Arial Black";
+}
+
+.setButton div div button.Inc {
+display: none;
+}
+
+.setButton div div button.Res {
+    display: none;
+}
+
+.incAndResButtons div div button.Set {
+    display: none;
+}

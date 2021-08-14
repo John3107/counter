@@ -1,24 +1,56 @@
-import React, {MouseEventHandler, useState} from 'react';
-import s from './Counter.module.css';
+import React from 'react';
+import {Buttons} from '../Button/Button';
+import s from './../../App.module.css'
 
+type CounterPropsType = {
+    score: number
+    setScore: (score: number) => void
+    maxValue: number
+    minValue: number
+    disInc: boolean
+    disReset: boolean
+}
 
-function Counter() {
-    let [score, setScore] = useState<number>(0);
+function Counter(props: CounterPropsType) {
 
-    const scoreColor = (score === 5) ? s.ScoreboardRed : s.ScoreboardBlack
+    const messageWithError = props.minValue <= -1
+        ? 'Incorrect value!'
+        : props.score
+
+    const scoreColor = props.disInc
+        ? s.ScoreboardRed
+        : s.ScoreboardBlack
+
+    const styleWithErrorMessage = props.minValue <= -1
+        ? s.errorText
+        : s.totalScore
+
+    const incButton = () => {
+        props.setScore(props.score + 1)
+    }
+
+    const resetButton = () => {
+        props.setScore(props.minValue)
+    }
+
 
     return (
         <div className={s.Counter}>
             <div className={scoreColor}>
-                <span className={s.totalScore}>{score}</span>
+                <span className={styleWithErrorMessage}>{messageWithError}</span>
             </div>
             <div className={s.Buttons}>
-                <button onClick={() => setScore(score + 1)} className={s.inc} disabled={score === 5}>inc</button>
-                <button onClick={() => setScore(score = 0)} className={s.reset} disabled={score === 0}>reset</button>
+                <div className={s.incAndResButtons}>
+                    <Buttons
+                        score={props.score}
+                        incButton={incButton}
+                        resetButton={resetButton}
+                        disInc={props.disInc}
+                        disReset={props.disReset}/>
+                </div>
             </div>
         </div>
-    );
+    )
 }
-
 
 export default Counter
