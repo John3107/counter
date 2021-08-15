@@ -11,23 +11,38 @@ type CounterPropsType = {
     minValue: number
     disInc: boolean
     disReset: boolean
+    enterMessage: string
+    setEnterMessage: (enterMessage: string) => void
+    onOff?: boolean
+    setOnOff?: (onOff: boolean) => void
 }
 
 function Counter(props: CounterPropsType) {
 
-    const messageWithError = props.minValue <= -1 ||
+
+    let styleWithErrorMessage = props.minValue <= -1 ||
     props.maxValue <= props.minValue
-        ? 'Incorrect value!'
-        : props.score
+        ? s.errorText
+        : s.totalScore
+
+
+    if(props.minValue <= -1 ||
+        props.maxValue <= props.minValue) {
+        props.setEnterMessage('Incorrect value!')
+    } else if(props.onOff) {
+        props.setEnterMessage('Choose value and press set!')
+        styleWithErrorMessage = s.enterText
+    } else if(props.onOff === false) {
+        props.setEnterMessage(JSON.stringify(props.score))
+    } else {
+        props.setEnterMessage(JSON.stringify(props.score))
+    }
 
     const scoreColor = props.disInc
         ? s.ScoreboardRed
         : s.ScoreboardBlack
 
-    const styleWithErrorMessage = props.minValue <= -1 ||
-    props.maxValue <= props.minValue
-        ? s.errorText
-        : s.totalScore
+
 
     const incButton = () => {
         props.setScore(props.score + 1)
@@ -38,11 +53,12 @@ function Counter(props: CounterPropsType) {
     }
 
 
+
     return (
         <div className={s.Counter}>
             <div className={scoreColor}>
                 <span className={styleWithErrorMessage}>
-                    {messageWithError}</span>
+                    {props.enterMessage}</span>
             </div>
             <div className={s.Buttons}>
                 <div className={s.incAndResButtons}>

@@ -59,6 +59,15 @@ body {
     color: red;
 }
 
+.enterText {
+    position: fixed;
+    top: 160px;
+    left: 560px;
+    font-size: 20px;
+    padding-left: 125px;
+    color: aqua;
+}
+
 .CounterSetter {
     width: 300px;
     height: 250px;

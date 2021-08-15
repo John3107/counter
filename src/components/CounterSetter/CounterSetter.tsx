@@ -11,6 +11,10 @@ type CounterSetterPropsType = {
     setDisValueSet: (valueSet: boolean) => void
     score: number
     setScore: (score: number) => void
+    enterMessage: string
+    setEnterMessage: (enterMessage: string) => void
+    onFocusMessage: () => void
+    onBlurMessage: () => void
 }
 
 export function CounterSetter(props: CounterSetterPropsType) {
@@ -46,11 +50,13 @@ export function CounterSetter(props: CounterSetterPropsType) {
         props.setDisValueSet(false)
         if (JSON.parse(e.currentTarget.value) <= -1) {
             props.setDisValueSet(true)
+            props.setEnterMessage('Incorrect value!')
         }
         if (JSON.parse(e.currentTarget.value) >= props.maxValue) {
             props.setDisValueSet(true)
         }
     }
+
 
     function setToLocalStorageHandler() {
         setToLocalStorageMaxValueHandler();
@@ -60,11 +66,16 @@ export function CounterSetter(props: CounterSetterPropsType) {
     }
 
 
+
+
+
     return (
         <div className={s.CounterSetter}>
             <div className={s.Scoreboard}>
                 <div className={equalValueInputStyle}>
                         <span>max value:<input
+                            onFocus={props.onFocusMessage}
+                            onBlur={props.onBlurMessage}
                             type={'number'}
                             onChange={onChangeMaxValueHandler}
                             value={props.maxValue}
@@ -72,6 +83,8 @@ export function CounterSetter(props: CounterSetterPropsType) {
                 </div>
                 <div>
                     <span className={s.startValue}>min value:<input
+                        onFocus={props.onFocusMessage}
+                        onBlur={props.onBlurMessage}
                         className={minInputStyle}
                         type={'number'}
                         onChange={onChangeMinValueHandler}

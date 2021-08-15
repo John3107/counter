@@ -9,6 +9,8 @@ function App() {
     const [maxValue, setMaxValue] = useState(setMaxValueFromLocalStorage)
     const [minValue, setMinValue] = useState(setMinValueFromLocalStorage)
     let [score, setScore] = useState(minValue);
+    const [enterMessage, setEnterMessage] = useState<string>('')
+    const [onOff, setOnOff] = useState<boolean>()
 
 
     const disInc = score === maxValue
@@ -32,6 +34,13 @@ function App() {
         }
     }
 
+    const onFocusMessage = () => {
+        setOnOff(true)
+    }
+
+    const onBlurMessage = () => {
+        setOnOff(false)
+    }
 
     return (
         <div className={s.counterTable}>
@@ -42,6 +51,10 @@ function App() {
                          minValue={minValue}
                          disInc={disInc}
                          disReset={disReset}
+                         enterMessage={enterMessage}
+                         setEnterMessage={setEnterMessage}
+                         onOff={onOff}
+                         setOnOff={setOnOff}
                 />
             </div>
             <div className={s.counterSetter}>
@@ -53,6 +66,10 @@ function App() {
                                setDisValueSet={setDisValueSet}
                                score={score}
                                setScore={setScore}
+                               enterMessage={enterMessage}
+                               setEnterMessage={setEnterMessage}
+                               onBlurMessage={onBlurMessage}
+                               onFocusMessage={onFocusMessage}
                 />
             </div>
         </div>
