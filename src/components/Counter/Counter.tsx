@@ -7,12 +7,7 @@ import {messageAC, scoreAC} from "../../bll/counter-reducer";
 
 
 
-type CounterPropsType = {
-    disInc: boolean
-    disReset: boolean
-}
-
-function Counter(props: CounterPropsType) {
+function Counter() {
     const dispatch = useDispatch()
 
     const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
@@ -20,6 +15,8 @@ function Counter(props: CounterPropsType) {
     const score = useSelector<AppRootStateType, number>(state => state.counter.score)
     const message = useSelector<AppRootStateType, string>(state => state.counter.message)
     const onOff = useSelector<AppRootStateType, boolean>(state => state.counter.onOff)
+    const disInc = useSelector<AppRootStateType, boolean>(state => state.counter.disInc)
+
 
     let styleWithErrorMessage = minValue <= -1 ||
     maxValue <= minValue
@@ -27,23 +24,22 @@ function Counter(props: CounterPropsType) {
         : s.totalScore
 
 
-    if(minValue <= -1 ||
+    if (minValue <= -1 ||
         maxValue <= minValue ||
         maxValue <= -1) {
         dispatch(messageAC('Incorrect value!'))
-    } else if(onOff) {
+    } else if (onOff) {
         dispatch(messageAC('Choose value and press set!'))
         styleWithErrorMessage = s.enterText
-    } else if(!onOff) {
+    } else if (!onOff) {
         dispatch(messageAC(JSON.stringify(score)))
     } else {
         dispatch(messageAC(JSON.stringify(score)))
     }
 
-    const scoreColor = props.disInc
+    const scoreColor = disInc
         ? s.ScoreboardRed
         : s.ScoreboardBlack
-
 
 
     const incButton = () => {
@@ -53,7 +49,6 @@ function Counter(props: CounterPropsType) {
     const resetButton = () => {
         dispatch(scoreAC(minValue))
     }
-
 
 
     return (
@@ -67,8 +62,7 @@ function Counter(props: CounterPropsType) {
                     <Buttons
                         incButton={incButton}
                         resetButton={resetButton}
-                        disInc={props.disInc}
-                        disReset={props.disReset}/>
+                    />
                 </div>
             </div>
         </div>

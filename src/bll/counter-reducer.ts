@@ -3,14 +3,19 @@ export type InitialStateFromCounterType = typeof InitialState;
 type ScoreACType = ReturnType<typeof scoreAC>
 type MessageACType = ReturnType<typeof messageAC>
 type OnOffACACType = ReturnType<typeof onOffAC>
+type disIncACType = ReturnType<typeof disIncAC>
+type disResACType = ReturnType<typeof disResAC>
 
 type ActionType = ScoreACType | MessageACType
-    | OnOffACACType;
+    | OnOffACACType | disIncACType
+    | disResACType;
 
 const InitialState = {
     score: 0,
     message: '',
-    onOff: true
+    onOff: false,
+    disInc: false,
+    disRes: false,
 }
 
 export const counterReducer = (state: InitialStateFromCounterType = InitialState, action: ActionType):
@@ -28,6 +33,14 @@ export const counterReducer = (state: InitialStateFromCounterType = InitialState
             return {
                 ...state, onOff: action.onOff
             }
+        case 'DISABLE-INC':
+            return {
+                ...state, disInc: action.disInc
+            }
+        case 'DISABLE-RES':
+            return {
+                ...state, disRes: action.disRes
+            }
         default:
             return state
     }
@@ -36,3 +49,5 @@ export const counterReducer = (state: InitialStateFromCounterType = InitialState
 export const scoreAC = (score: number) => ({type: 'SCORE', score} as const)
 export const messageAC = (message: string) => ({type: 'MESSAGE', message} as const)
 export const onOffAC = (onOff: boolean) => ({type: 'ON-OFF', onOff} as const)
+export const disIncAC = (disInc: boolean) => ({type: 'DISABLE-INC', disInc} as const)
+export const disResAC = (disRes: boolean) => ({type: 'DISABLE-RES', disRes} as const)

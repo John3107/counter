@@ -11,6 +11,7 @@ type GetMinValueFromLSType = ReturnType<typeof getMinValueFromLSAC>
 type disValueACType = ReturnType<typeof disValueAC>
 
 
+
 type ActionType = SetMaxValueToLSType | GetMaxValueFromLSType
     | SetMinValueToLSType | GetMinValueFromLSType
     | disValueACType;
@@ -18,7 +19,7 @@ type ActionType = SetMaxValueToLSType | GetMaxValueFromLSType
 const InitialState = {
     maxValue: 0,
     minValue: 0,
-    disable: false
+    disable: false,
 }
 
 export const counterSetterReducer = (state: InitialStateFromCounterSetterType = InitialState, action: ActionType):
@@ -79,29 +80,11 @@ export const getMinValueFromLSTC = () => (dispatch: Dispatch) => {
     }
 }
 
-export const setMaxValueToLSAC = (maxValue: number) => ({
-    type: 'SET-MAX-VALUE-TO-LC',
-    maxValue
-} as const)
-
-export const getMaxValueFromLSAC = (maxValue: number) => ({
-    type: 'GET-MAX-VALUE-FROM-LC',
-    maxValue
-} as const)
+export const setMaxValueToLSAC = (maxValue: number) => ({type: 'SET-MAX-VALUE-TO-LC', maxValue} as const)
+export const getMaxValueFromLSAC = (maxValue: number) => ({type: 'GET-MAX-VALUE-FROM-LC', maxValue} as const)
+export const setMinValueToLSAC = (minValue: number) => ({type: 'SET-MIN-VALUE-TO-LC', minValue} as const)
+export const getMinValueFromLSAC = (minValue: number) => ({type: 'GET-MIN-VALUE-FROM-LC', minValue} as const)
+export const disValueAC = (disable: boolean) => ({type: 'DISABLE', disable} as const)
 
 
-export const setMinValueToLSAC = (minValue: number) => ({
-    type: 'SET-MIN-VALUE-TO-LC',
-    minValue
-} as const)
-
-export const getMinValueFromLSAC = (minValue: number) => ({
-    type: 'GET-MIN-VALUE-FROM-LC',
-    minValue
-} as const)
-
-export const disValueAC = (disable: boolean) => ({
-    type: 'DISABLE',
-    disable
-} as const)
 
