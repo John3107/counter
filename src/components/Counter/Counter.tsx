@@ -1,41 +1,43 @@
 import React from 'react';
 import {Buttons} from '../Button/Button';
 import s from './../../App.module.css'
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../bll/store";
+import {messageAC, scoreAC} from "../../bll/counter-reducer";
 
 
 
 type CounterPropsType = {
-    score: number
-    setScore: (score: number) => void
-    maxValue: number
-    minValue: number
     disInc: boolean
     disReset: boolean
-    enterMessage: string
-    setEnterMessage: (enterMessage: string) => void
-    onOff?: boolean
-    setOnOff?: (onOff: boolean) => void
 }
 
 function Counter(props: CounterPropsType) {
+    const dispatch = useDispatch()
 
+    const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
+    const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
+    const score = useSelector<AppRootStateType, number>(state => state.counter.score)
+    const message = useSelector<AppRootStateType, string>(state => state.counter.message)
+    const onOff = useSelector<AppRootStateType, boolean>(state => state.counter.onOff)
 
-    let styleWithErrorMessage = props.minValue <= -1 ||
-    props.maxValue <= props.minValue
+    let styleWithErrorMessage = minValue <= -1 ||
+    maxValue <= minValue
         ? s.errorText
         : s.totalScore
 
 
-    if(props.minValue <= -1 ||
-        props.maxValue <= props.minValue) {
-        props.setEnterMessage('Incorrect value!')
-    } else if(props.onOff) {
-        props.setEnterMessage('Choose value and press set!')
+    if(minValue <= -1 ||
+        maxValue <= minValue ||
+        maxValue <= -1) {
+        dispatch(messageAC('Incorrect value!'))
+    } else if(onOff) {
+        dispatch(messageAC('Choose value and press set!'))
         styleWithErrorMessage = s.enterText
-    } else if(props.onOff === false) {
-        props.setEnterMessage(JSON.stringify(props.score))
+    } else if(!onOff) {
+        dispatch(messageAC(JSON.stringify(score)))
     } else {
-        props.setEnterMessage(JSON.stringify(props.score))
+        dispatch(messageAC(JSON.stringify(score)))
     }
 
     const scoreColor = props.disInc
@@ -45,11 +47,11 @@ function Counter(props: CounterPropsType) {
 
 
     const incButton = () => {
-        props.setScore(props.score + 1)
+        dispatch(scoreAC(score + 1))
     }
 
     const resetButton = () => {
-        props.setScore(props.minValue)
+        dispatch(scoreAC(minValue))
     }
 
 
@@ -58,12 +60,11 @@ function Counter(props: CounterPropsType) {
         <div className={s.Counter}>
             <div className={scoreColor}>
                 <span className={styleWithErrorMessage}>
-                    {props.enterMessage}</span>
+                    {message}</span>
             </div>
             <div className={s.Buttons}>
                 <div className={s.incAndResButtons}>
                     <Buttons
-                        score={props.score}
                         incButton={incButton}
                         resetButton={resetButton}
                         disInc={props.disInc}

@@ -1,74 +1,54 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './App.module.css'
 import Counter from "./components/Counter/Counter";
 import {CounterSetter} from "./components/CounterSetter/CounterSetter";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./bll/store";
+import {
+    getMaxValueFromLSTC, getMinValueFromLSTC,
+} from "./bll/counterSetter-reducrer";
+import {onOffAC} from "./bll/counter-reducer";
 
 function App() {
 
-    const [disValueSet, setDisValueSet] = useState(false)
-    const [maxValue, setMaxValue] = useState(setMaxValueFromLocalStorage)
-    const [minValue, setMinValue] = useState(setMinValueFromLocalStorage)
-    let [score, setScore] = useState(minValue);
-    const [enterMessage, setEnterMessage] = useState<string>('')
-    const [onOff, setOnOff] = useState<boolean>()
+    const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
+    const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
+    const score = useSelector<AppRootStateType, number>(state => state.counter.score)
+
+
+    const dispatch = useDispatch()
 
 
     const disInc = score === maxValue
     const disReset = score === minValue
 
 
-    function setMaxValueFromLocalStorage() {
-        let valueAsString = localStorage.getItem('counterMaxValue')
-        if (valueAsString) {
-            let newValue = JSON.parse(valueAsString)
-            return newValue
-        }
-    }
+    useEffect(() => {
+        dispatch(getMaxValueFromLSTC())
+    }, [])
 
+    useEffect(() => {
+        dispatch(getMinValueFromLSTC())
+    }, [])
 
-    function setMinValueFromLocalStorage() {
-        let valueAsString = localStorage.getItem('counterMinValue')
-        if (valueAsString) {
-            let newValue = JSON.parse(valueAsString)
-            return newValue
-        }
-    }
 
     const onFocusMessage = () => {
-        setOnOff(true)
+        dispatch(onOffAC(true))
     }
 
     const onBlurMessage = () => {
-        setOnOff(false)
+        dispatch(onOffAC(false))
     }
 
     return (
         <div className={s.counterTable}>
             <div>
-                <Counter score={score}
-                         setScore={setScore}
-                         maxValue={maxValue}
-                         minValue={minValue}
-                         disInc={disInc}
+                <Counter disInc={disInc}
                          disReset={disReset}
-                         enterMessage={enterMessage}
-                         setEnterMessage={setEnterMessage}
-                         onOff={onOff}
-                         setOnOff={setOnOff}
                 />
             </div>
             <div className={s.counterSetter}>
-                <CounterSetter maxValue={maxValue}
-                               setMaxValue={setMaxValue}
-                               minValue={minValue}
-                               setMinValue={setMinValue}
-                               disValueSet={disValueSet}
-                               setDisValueSet={setDisValueSet}
-                               score={score}
-                               setScore={setScore}
-                               enterMessage={enterMessage}
-                               setEnterMessage={setEnterMessage}
-                               onBlurMessage={onBlurMessage}
+                <CounterSetter onBlurMessage={onBlurMessage}
                                onFocusMessage={onFocusMessage}
                 />
             </div>

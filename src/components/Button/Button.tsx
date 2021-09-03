@@ -1,18 +1,19 @@
 import React from "react";
 import s from './../../App.module.css'
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../bll/store";
 
 type ButtonsType = {
-    score?: number
     incButton?: () => void
     resetButton?: () => void
     setToLocalStorageHandler?: () => void
     disInc?: boolean
     disReset?: boolean
-    disValueSet?: boolean
 }
 
 
 export function Buttons(props: ButtonsType) {
+    const disable = useSelector<AppRootStateType, boolean>(state => state.counterSetter.disable)
 
     return (
         <div>
@@ -31,7 +32,7 @@ export function Buttons(props: ButtonsType) {
             <div>
                 <button className={s.Set}
                         onClick={props.setToLocalStorageHandler}
-                        disabled={props.disValueSet}>set
+                        disabled={disable}>set
                 </button>
             </div>
         </div>

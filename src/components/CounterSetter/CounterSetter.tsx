@@ -1,59 +1,57 @@
 import React, {ChangeEvent} from 'react';
 import {Buttons} from '../Button/Button';
 import s from './../../App.module.css'
+import {useDispatch, useSelector} from "react-redux";
+import {disValueAC, setMaxValueToLSTC, setMinValueToLSTC} from "../../bll/counterSetter-reducrer";
+import {AppRootStateType} from "../../bll/store";
+import {messageAC, scoreAC} from "../../bll/counter-reducer";
 
 type CounterSetterPropsType = {
-    maxValue: string
-    setMaxValue: (maxValue: string) => void
-    minValue: string
-    setMinValue: (minValue: string) => void
-    disValueSet: boolean
-    setDisValueSet: (valueSet: boolean) => void
-    score: number
-    setScore: (score: number) => void
-    enterMessage: string
-    setEnterMessage: (enterMessage: string) => void
     onFocusMessage: () => void
     onBlurMessage: () => void
 }
 
 export function CounterSetter(props: CounterSetterPropsType) {
 
+    const dispatch = useDispatch()
 
-    const minInputStyle = (JSON.parse(props.minValue)) <= -1 ||
-    props.maxValue <= props.minValue
+    const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
+    const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
+
+    const minInputStyle = minValue <= -1 ||
+    maxValue <= minValue
         ? s.startValueErrorInput
         : s.startValueInput
 
-    const equalValueInputStyle = props.maxValue <= props.minValue
+    const equalValueInputStyle = maxValue <= minValue
         ? s.errorMaxValue : s.maxValue
 
     const setToLocalStorageMaxValueHandler = () => {
-        localStorage.setItem('counterMaxValue', props.maxValue)
+        localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
     }
 
     const setToLocalStorageMinValueHandler = () => {
-        localStorage.setItem('counterMinValue', props.minValue)
+        localStorage.setItem('counterMinValue', JSON.stringify(minValue))
     }
 
 
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setMaxValue(JSON.parse(e.currentTarget.value))
-        props.setDisValueSet(false)
-        if (JSON.parse(e.currentTarget.value) <= props.minValue) {
-            props.setDisValueSet(true)
+        dispatch(setMaxValueToLSTC(JSON.parse(e.currentTarget.value)))
+        dispatch(disValueAC(false))
+        if (JSON.parse(e.currentTarget.value) <= minValue) {
+            dispatch(disValueAC(true))
         }
     }
 
     const onChangeMinValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setMinValue(JSON.parse(e.currentTarget.value))
-        props.setDisValueSet(false)
+        dispatch(setMinValueToLSTC(JSON.parse(e.currentTarget.value)))
+        dispatch(disValueAC(false))
         if (JSON.parse(e.currentTarget.value) <= -1) {
-            props.setDisValueSet(true)
-            props.setEnterMessage('Incorrect value!')
+            dispatch(disValueAC(true))
+            dispatch(messageAC('Incorrect value!'))
         }
-        if (JSON.parse(e.currentTarget.value) >= props.maxValue) {
-            props.setDisValueSet(true)
+        if (JSON.parse(e.currentTarget.value) >= maxValue) {
+            dispatch(disValueAC(true))
         }
     }
 
@@ -61,8 +59,8 @@ export function CounterSetter(props: CounterSetterPropsType) {
     function setToLocalStorageHandler() {
         setToLocalStorageMaxValueHandler();
         setToLocalStorageMinValueHandler();
-        props.setDisValueSet(true)
-        props.setScore(JSON.parse(props.minValue))
+        dispatch(disValueAC(true))
+        dispatch(scoreAC(minValue))
     }
 
 
@@ -78,7 +76,7 @@ export function CounterSetter(props: CounterSetterPropsType) {
                             onBlur={props.onBlurMessage}
                             type={'number'}
                             onChange={onChangeMaxValueHandler}
-                            value={props.maxValue}
+                            value={maxValue}
                         /></span>
                 </div>
                 <div>
@@ -88,7 +86,7 @@ export function CounterSetter(props: CounterSetterPropsType) {
                         className={minInputStyle}
                         type={'number'}
                         onChange={onChangeMinValueHandler}
-                        value={props.minValue}
+                        value={minValue}
                     /></span>
                 </div>
             </div>
@@ -96,7 +94,6 @@ export function CounterSetter(props: CounterSetterPropsType) {
                 <div className={s.setButton}>
                     <Buttons
                         setToLocalStorageHandler={setToLocalStorageHandler}
-                        disValueSet={props.disValueSet}
                     />
                 </div>
             </div>
