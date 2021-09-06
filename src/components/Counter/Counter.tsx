@@ -1,14 +1,16 @@
 import React from 'react';
-import {Buttons} from '../Button/Button';
+import {Button} from '../Button/Button';
 import s from './../../App.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
-import {messageAC, scoreAC} from "../../bll/counter-reducer";
+import {disIncAC, disResAC, messageAC, scoreAC} from "../../bll/counter-reducer";
 
 
 
 function Counter() {
     const dispatch = useDispatch()
+
+
 
     const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
     const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
@@ -16,7 +18,7 @@ function Counter() {
     const message = useSelector<AppRootStateType, string>(state => state.counter.message)
     const onOff = useSelector<AppRootStateType, boolean>(state => state.counter.onOff)
     const disInc = useSelector<AppRootStateType, boolean>(state => state.counter.disInc)
-
+    const disRes = useSelector<AppRootStateType, boolean>(state => state.counter.disRes)
 
     let styleWithErrorMessage = minValue <= -1 ||
     maxValue <= minValue
@@ -44,11 +46,18 @@ function Counter() {
 
     const incButton = () => {
         dispatch(scoreAC(score + 1))
+        if (score + 1 === maxValue) {
+            dispatch(disIncAC(true))
+        }
+        dispatch(disResAC(false))
     }
 
     const resetButton = () => {
         dispatch(scoreAC(minValue))
+        dispatch(disResAC(true))
+        dispatch(disIncAC(false))
     }
+
 
 
     return (
@@ -58,11 +67,21 @@ function Counter() {
                     {message}</span>
             </div>
             <div className={s.Buttons}>
-                <div className={s.incAndResButtons}>
-                    <Buttons
-                        incButton={incButton}
-                        resetButton={resetButton}
+                <div className={s.ButtonsContainer}>
+                    <div className={s.inc}>
+                    <Button
+                        title={'inc'}
+                        onClickHandler={incButton}
+                        disabled={disInc}
                     />
+                    </div>
+                    <div className={s.res}>
+                    <Button
+                        title={'res'}
+                        onClickHandler={resetButton}
+                        disabled={disRes}
+                    />
+                    </div>
                 </div>
             </div>
         </div>

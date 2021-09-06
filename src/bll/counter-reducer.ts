@@ -1,4 +1,7 @@
-export type InitialStateFromCounterType = typeof InitialState;
+
+
+export type InitialStateFromCounterType = typeof InitialState
+
 
 type ScoreACType = ReturnType<typeof scoreAC>
 type MessageACType = ReturnType<typeof messageAC>
@@ -11,7 +14,7 @@ type ActionType = ScoreACType | MessageACType
     | disResACType;
 
 const InitialState = {
-    score: 0,
+    score: Number(localStorage.getItem('counterMinValue')),
     message: '',
     onOff: false,
     disInc: false,

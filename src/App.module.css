@@ -159,10 +159,25 @@ body {
     border: 3px solid aqua;
 }
 
-.incAndResButtons div div button.Inc {
-    position: fixed;
-    top: 275px;
-    left: 660px;
+.ButtonsSet {
+    width: 275px;
+    height: 80px;
+    background-color: black;
+    margin-top: 60px;
+    margin-left: -3px;
+    border-radius: 10px;
+    border: 3px solid aqua;
+}
+
+.ButtonsContainer {
+    margin-left: -10px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.Inc {
     background-color: aqua;
     width: 100px;
     height: 30px;
@@ -171,14 +186,10 @@ body {
     margin-left: 20px;
     margin-top: 25px;
     font-size: 25px;
-    font-family: "Arial Black";
 }
 
 
-.incAndResButtons div div button.Res {
-    position: fixed;
-    top: 275px;
-    left: 800px;
+.Res {
     background-color: aqua;
     width: 100px;
     height: 30px;
@@ -187,13 +198,9 @@ body {
     margin-left: 20px;
     margin-top: 25px;
     font-size: 25px;
-    font-family: "Arial Black";
 }
 
-.setButton div div button.Set {
-    position: fixed;
-    top: 275px;
-    left: 280px;
+.setButton  {
     background-color: aqua;
     width: 100px;
     height: 30px;
@@ -202,17 +209,4 @@ body {
     margin-left: 20px;
     margin-top: 25px;
     font-size: 25px;
-    font-family: "Arial Black";
-}
-
-.setButton div div button.Inc {
-display: none;
-}
-
-.setButton div div button.Res {
-    display: none;
-}
-
-.incAndResButtons div div button.Set {
-    display: none;
 }

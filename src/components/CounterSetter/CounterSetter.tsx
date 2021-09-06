@@ -1,8 +1,12 @@
 import React, {ChangeEvent} from 'react';
-import {Buttons} from '../Button/Button';
+import {Button} from '../Button/Button';
 import s from './../../App.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {disValueAC, setMaxValueToLSTC, setMinValueToLSTC} from "../../bll/counterSetter-reducrer";
+import {
+    disValueAC,
+    setMaxValueToLSTC,
+    setMinValueToLSTC
+} from "../../bll/counterSetter-reducrer";
 import {AppRootStateType} from "../../bll/store";
 import {messageAC, scoreAC} from "../../bll/counter-reducer";
 
@@ -17,6 +21,7 @@ export function CounterSetter(props: CounterSetterPropsType) {
 
     const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
     const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
+    const disable = useSelector<AppRootStateType, boolean>(state => state.counterSetter.disable)
 
     const minInputStyle = minValue <= -1 ||
     maxValue <= minValue
@@ -88,17 +93,20 @@ export function CounterSetter(props: CounterSetterPropsType) {
                         onChange={onChangeMinValueHandler}
                         value={minValue}
                     /></span>
-                </div>
-            </div>
-            <div className={s.Buttons}>
-                <div className={s.setButton}>
-                    <Buttons
-                        setToLocalStorageHandler={setToLocalStorageHandler}
-                    />
+                    <div className={s.ButtonsSet}>
+                        <div className={s.ButtonsContainer}>
+                            <Button
+                                title={'set'}
+                                onClickHandler={setToLocalStorageHandler}
+                                disabled={disable}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 
 }
+
 
