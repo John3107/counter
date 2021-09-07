@@ -1,24 +1,23 @@
-
-
 export type InitialStateFromCounterType = typeof InitialState
-
 
 type ScoreACType = ReturnType<typeof scoreAC>
 type MessageACType = ReturnType<typeof messageAC>
-type OnOffACACType = ReturnType<typeof onOffAC>
+type onFocusHandlerACType = ReturnType<typeof onFocusHandlerAC>
 type disIncACType = ReturnType<typeof disIncAC>
 type disResACType = ReturnType<typeof disResAC>
+type styleMessageACType = ReturnType<typeof styleMessageAC>
 
 type ActionType = ScoreACType | MessageACType
-    | OnOffACACType | disIncACType
-    | disResACType;
+    | onFocusHandlerACType | disIncACType
+    | disResACType | styleMessageACType;
 
 const InitialState = {
-    score: Number(localStorage.getItem('counterMinValue')),
     message: '',
-    onOff: false,
+    score: 0,
+    onFocusHandler: false,
     disInc: false,
     disRes: false,
+    styleMessage: ''
 }
 
 export const counterReducer = (state: InitialStateFromCounterType = InitialState, action: ActionType):
@@ -28,13 +27,13 @@ export const counterReducer = (state: InitialStateFromCounterType = InitialState
             return {
                 ...state, score: action.score
             }
-            case 'MESSAGE':
+        case 'MESSAGE':
             return {
                 ...state, message: action.message
             }
-            case 'ON-OFF':
+        case 'ON-FOCUS-HANDLER':
             return {
-                ...state, onOff: action.onOff
+                ...state, onFocusHandler: action.onFocusHandler
             }
         case 'DISABLE-INC':
             return {
@@ -44,6 +43,10 @@ export const counterReducer = (state: InitialStateFromCounterType = InitialState
             return {
                 ...state, disRes: action.disRes
             }
+        case 'STYLE-MESSAGE':
+            return {
+                ...state, styleMessage: action.styleMessage
+            }
         default:
             return state
     }
@@ -51,6 +54,7 @@ export const counterReducer = (state: InitialStateFromCounterType = InitialState
 
 export const scoreAC = (score: number) => ({type: 'SCORE', score} as const)
 export const messageAC = (message: string) => ({type: 'MESSAGE', message} as const)
-export const onOffAC = (onOff: boolean) => ({type: 'ON-OFF', onOff} as const)
+export const onFocusHandlerAC = (onOff: boolean) => ({type: 'ON-FOCUS-HANDLER', onFocusHandler: onOff} as const)
 export const disIncAC = (disInc: boolean) => ({type: 'DISABLE-INC', disInc} as const)
 export const disResAC = (disRes: boolean) => ({type: 'DISABLE-RES', disRes} as const)
+export const styleMessageAC = (styleMessage: string) => ({type: 'STYLE-MESSAGE', styleMessage} as const)

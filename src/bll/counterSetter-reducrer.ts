@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
+import {disIncAC, disResAC, scoreAC} from "./counter-reducer";
 
 
 export type InitialStateFromCounterSetterType = typeof InitialState;
@@ -9,7 +10,6 @@ type GetMaxValueFromLSType = ReturnType<typeof getMaxValueFromLSAC>
 type SetMinValueToLSType = ReturnType<typeof setMinValueToLSAC>
 type GetMinValueFromLSType = ReturnType<typeof getMinValueFromLSAC>
 type disValueACType = ReturnType<typeof disValueAC>
-
 
 
 type ActionType = SetMaxValueToLSType | GetMaxValueFromLSType
@@ -41,7 +41,7 @@ export const counterSetterReducer = (state: InitialStateFromCounterSetterType = 
             return {
                 ...state, minValue: action.minValue
             }
-            case 'DISABLE':
+        case 'DISABLE':
             return {
                 ...state, disable: action.disable
             }
@@ -57,11 +57,16 @@ export const setMaxValueToLSTC = (maxValue: number) => (dispatch: Dispatch, getS
     dispatch(setMaxValueToLSAC(maxValue))
 }
 
-export const getMaxValueFromLSTC = () => (dispatch: Dispatch) => {
+export const getMaxValueFromLSTC = () => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     let valueAsString = localStorage.getItem('counterMaxValue')
     if (valueAsString) {
         let newValue = JSON.parse(valueAsString)
         dispatch(getMaxValueFromLSAC(newValue))
+        if (newValue <= -1 || newValue <= getState().counterSetter.minValue) {
+            dispatch(disValueAC(true))
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
+        }
     }
 }
 
@@ -72,11 +77,17 @@ export const setMinValueToLSTC = (minValue: number) => (dispatch: Dispatch, getS
     dispatch(setMinValueToLSAC(minValue))
 }
 
-export const getMinValueFromLSTC = () => (dispatch: Dispatch) => {
+export const getMinValueFromLSTC = () => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     let valueAsString = localStorage.getItem('counterMinValue')
     if (valueAsString) {
         let newValue = JSON.parse(valueAsString)
         dispatch(getMinValueFromLSAC(newValue))
+        dispatch(scoreAC(newValue))
+        if (newValue <= -1 || newValue >= getState().counterSetter.maxValue) {
+            dispatch(disValueAC(true))
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
+        }
     }
 }
 

@@ -46,8 +46,15 @@ body {
 }
 
 .totalScore {
+    color: aqua;
     font-size: 60px;
-    padding-left: 125px;
+    padding-left: 115px;
+}
+
+.totalScoreError {
+    color: red;
+    font-size: 60px;
+    padding-left: 115px;
 }
 
 .errorText {
@@ -112,8 +119,9 @@ body {
     width: 90px;
     height: 20px;
     margin-left: 30px;
+    margin-top: 10px;
     border-radius: 5px;
-    border-color: aqua;
+    border: solid 5px aqua;
     text-align: center;
     font-size: 18px;
 }
@@ -121,6 +129,7 @@ body {
 .errorMaxValue input{
     width: 90px;
     height: 20px;
+    margin-top: 10px;
     margin-left: 30px;
     border-radius: 5px;
     border: solid 5px red;
@@ -133,8 +142,9 @@ body {
     width: 90px;
     height: 20px;
     margin-left: 33px;
+    margin-top: 20px;
     border-radius: 5px;
-    border-color: aqua;
+    border: solid 5px aqua;
     text-align: center;
     font-size: 18px;
 }
@@ -142,6 +152,7 @@ body {
     width: 90px;
     height: 20px;
     margin-left: 33px;
+    margin-top: 20px;
     border-radius: 5px;
     border: solid 5px red;
     text-align: center;
@@ -149,21 +160,21 @@ body {
 }
 
 
-.Buttons {
+.ButtonsIncAndRes {
     width: 275px;
     height: 80px;
     background-color: black;
-    margin-top: 25px;
+    margin-top: 20px;
     margin-left: 10px;
     border-radius: 10px;
     border: 3px solid aqua;
 }
 
-.ButtonsSet {
+.ButtonSet {
     width: 275px;
     height: 80px;
     background-color: black;
-    margin-top: 60px;
+    margin-top: 50px;
     margin-left: -3px;
     border-radius: 10px;
     border: 3px solid aqua;
@@ -177,30 +188,7 @@ body {
     justify-content: space-evenly;
 }
 
-.Inc {
-    background-color: aqua;
-    width: 100px;
-    height: 30px;
-    border-radius: 5px;
-    border-style: none;
-    margin-left: 20px;
-    margin-top: 25px;
-    font-size: 25px;
-}
-
-
-.Res {
-    background-color: aqua;
-    width: 100px;
-    height: 30px;
-    border-radius: 5px;
-    border-style: none;
-    margin-left: 20px;
-    margin-top: 25px;
-    font-size: 25px;
-}
-
-.setButton  {
+.button {
     background-color: aqua;
     width: 100px;
     height: 30px;

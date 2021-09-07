@@ -8,14 +8,10 @@ import {
     setMinValueToLSTC
 } from "../../bll/counterSetter-reducrer";
 import {AppRootStateType} from "../../bll/store";
-import {messageAC, scoreAC} from "../../bll/counter-reducer";
+import {disIncAC, disResAC, messageAC, onFocusHandlerAC, scoreAC, styleMessageAC} from "../../bll/counter-reducer";
 
-type CounterSetterPropsType = {
-    onFocusMessage: () => void
-    onBlurMessage: () => void
-}
 
-export function CounterSetter(props: CounterSetterPropsType) {
+export function CounterSetter() {
 
     const dispatch = useDispatch()
 
@@ -23,27 +19,40 @@ export function CounterSetter(props: CounterSetterPropsType) {
     const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
     const disable = useSelector<AppRootStateType, boolean>(state => state.counterSetter.disable)
 
+
+    const onFocusMessage = () => {
+        dispatch(onFocusHandlerAC(true))
+        dispatch(disIncAC(true))
+        dispatch(disResAC(true))
+    }
+
+    const onBlurMessage = () => {
+        dispatch(onFocusHandlerAC(false))
+        dispatch(styleMessageAC(s.totalScore))
+        dispatch(scoreAC(minValue))
+        dispatch(disIncAC(true))
+        dispatch(disResAC(true))
+    }
+
     const minInputStyle = minValue <= -1 ||
     maxValue <= minValue
         ? s.startValueErrorInput
         : s.startValueInput
 
-    const equalValueInputStyle = maxValue <= minValue
+    const equalValueInputStyle = maxValue <= minValue || maxValue <= -1
         ? s.errorMaxValue : s.maxValue
-
-    const setToLocalStorageMaxValueHandler = () => {
-        localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
-    }
-
-    const setToLocalStorageMinValueHandler = () => {
-        localStorage.setItem('counterMinValue', JSON.stringify(minValue))
-    }
-
 
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setMaxValueToLSTC(JSON.parse(e.currentTarget.value)))
         dispatch(disValueAC(false))
         if (JSON.parse(e.currentTarget.value) <= minValue) {
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
+            dispatch(disValueAC(true))
+        }
+        if (JSON.parse(e.currentTarget.value) <= -1 || minValue <= -1) {
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
             dispatch(disValueAC(true))
         }
     }
@@ -52,33 +61,35 @@ export function CounterSetter(props: CounterSetterPropsType) {
         dispatch(setMinValueToLSTC(JSON.parse(e.currentTarget.value)))
         dispatch(disValueAC(false))
         if (JSON.parse(e.currentTarget.value) <= -1) {
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
             dispatch(disValueAC(true))
             dispatch(messageAC('Incorrect value!'))
         }
         if (JSON.parse(e.currentTarget.value) >= maxValue) {
+            dispatch(disIncAC(true))
+            dispatch(disResAC(true))
             dispatch(disValueAC(true))
         }
     }
 
 
-    function setToLocalStorageHandler() {
-        setToLocalStorageMaxValueHandler();
-        setToLocalStorageMinValueHandler();
+    function setHandler() {
         dispatch(disValueAC(true))
         dispatch(scoreAC(minValue))
+        dispatch(disIncAC(false))
+        dispatch(disResAC(false))
+        dispatch(styleMessageAC(s.totalScore))
     }
-
-
-
 
 
     return (
         <div className={s.CounterSetter}>
             <div className={s.Scoreboard}>
-                <div className={equalValueInputStyle}>
-                        <span>max value:<input
-                            onFocus={props.onFocusMessage}
-                            onBlur={props.onBlurMessage}
+                <div>
+                        <span className={equalValueInputStyle}>max value:<input
+                            onFocus={onFocusMessage}
+                            onBlur={onBlurMessage}
                             type={'number'}
                             onChange={onChangeMaxValueHandler}
                             value={maxValue}
@@ -86,18 +97,18 @@ export function CounterSetter(props: CounterSetterPropsType) {
                 </div>
                 <div>
                     <span className={s.startValue}>min value:<input
-                        onFocus={props.onFocusMessage}
-                        onBlur={props.onBlurMessage}
+                        onFocus={onFocusMessage}
+                        onBlur={onBlurMessage}
                         className={minInputStyle}
                         type={'number'}
                         onChange={onChangeMinValueHandler}
                         value={minValue}
                     /></span>
-                    <div className={s.ButtonsSet}>
+                    <div className={s.ButtonSet}>
                         <div className={s.ButtonsContainer}>
                             <Button
                                 title={'set'}
-                                onClickHandler={setToLocalStorageHandler}
+                                onClickHandler={setHandler}
                                 disabled={disable}
                             />
                         </div>

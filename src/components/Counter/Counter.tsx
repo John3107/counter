@@ -1,43 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button} from '../Button/Button';
 import s from './../../App.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
-import {disIncAC, disResAC, messageAC, scoreAC} from "../../bll/counter-reducer";
-
+import {
+    disIncAC,
+    disResAC,
+    InitialStateFromCounterType,
+    messageAC,
+    scoreAC,
+    styleMessageAC
+} from "../../bll/counter-reducer";
 
 
 function Counter() {
+
     const dispatch = useDispatch()
-
-
 
     const minValue = useSelector<AppRootStateType, number>(state => state.counterSetter.minValue)
     const maxValue = useSelector<AppRootStateType, number>(state => state.counterSetter.maxValue)
-    const score = useSelector<AppRootStateType, number>(state => state.counter.score)
-    const message = useSelector<AppRootStateType, string>(state => state.counter.message)
-    const onOff = useSelector<AppRootStateType, boolean>(state => state.counter.onOff)
-    const disInc = useSelector<AppRootStateType, boolean>(state => state.counter.disInc)
-    const disRes = useSelector<AppRootStateType, boolean>(state => state.counter.disRes)
 
-    let styleWithErrorMessage = minValue <= -1 ||
-    maxValue <= minValue
-        ? s.errorText
-        : s.totalScore
-
-
-    if (minValue <= -1 ||
-        maxValue <= minValue ||
-        maxValue <= -1) {
-        dispatch(messageAC('Incorrect value!'))
-    } else if (onOff) {
-        dispatch(messageAC('Choose value and press set!'))
-        styleWithErrorMessage = s.enterText
-    } else if (!onOff) {
-        dispatch(messageAC(JSON.stringify(score)))
-    } else {
-        dispatch(messageAC(JSON.stringify(score)))
-    }
+    let {score, message, onFocusHandler, disInc, disRes, styleMessage} =
+        useSelector<AppRootStateType, InitialStateFromCounterType>(state => state.counter)
 
     const scoreColor = disInc
         ? s.ScoreboardRed
@@ -48,6 +32,7 @@ function Counter() {
         dispatch(scoreAC(score + 1))
         if (score + 1 === maxValue) {
             dispatch(disIncAC(true))
+            dispatch(styleMessageAC(s.totalScoreError))
         }
         dispatch(disResAC(false))
     }
@@ -56,31 +41,47 @@ function Counter() {
         dispatch(scoreAC(minValue))
         dispatch(disResAC(true))
         dispatch(disIncAC(false))
+        dispatch(styleMessageAC(s.totalScore))
     }
 
+    useEffect(() => {
+        if (minValue <= -1 ||
+            maxValue <= minValue ||
+            maxValue <= -1) {
+            dispatch(messageAC('Incorrect value!'))
+            dispatch(styleMessageAC(s.errorText))
+        } else if (onFocusHandler) {
+            dispatch(messageAC('Choose value and press set!'))
+            dispatch(styleMessageAC(s.enterText))
+        } else if (!onFocusHandler) {
+            dispatch(messageAC(JSON.stringify(score)))
+        } else {
+            dispatch(messageAC(JSON.stringify(score)))
+        }
 
+    }, [maxValue, minValue, score, onFocusHandler, styleMessage])
 
     return (
         <div className={s.Counter}>
             <div className={scoreColor}>
-                <span className={styleWithErrorMessage}>
+                <span className={styleMessage}>
                     {message}</span>
             </div>
-            <div className={s.Buttons}>
+            <div className={s.ButtonsIncAndRes}>
                 <div className={s.ButtonsContainer}>
-                    <div className={s.inc}>
-                    <Button
-                        title={'inc'}
-                        onClickHandler={incButton}
-                        disabled={disInc}
-                    />
+                    <div>
+                        <Button
+                            title={'inc'}
+                            onClickHandler={incButton}
+                            disabled={disInc}
+                        />
                     </div>
-                    <div className={s.res}>
-                    <Button
-                        title={'res'}
-                        onClickHandler={resetButton}
-                        disabled={disRes}
-                    />
+                    <div>
+                        <Button
+                            title={'res'}
+                            onClickHandler={resetButton}
+                            disabled={disRes}
+                        />
                     </div>
                 </div>
             </div>
